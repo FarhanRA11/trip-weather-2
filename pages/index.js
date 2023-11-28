@@ -24,7 +24,7 @@ const Home = () => {
             <Image src='/logo.png' width={200} height={200} alt='logo' priority />
             <div>
                 <p>Welcome to Trip Weather website</p>
-                <p>the ultimate tool for planning your trips! With user-friendly interface, you can easily pick your starting and destination points, and it'll take care of the rest.</p>
+                <p>the ultimate tool for planning your trips! With user-friendly interface, you can easily pick your starting and destination points, and it&apos;ll take care of the rest.</p>
             </div>
         </div>
 
