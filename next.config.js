@@ -12,8 +12,7 @@ module.exports = {
         ],
         unoptimized: true
     },
-    output: 'export'
 };
 
-// const dotenv = require('dotenv');
-// dotenv.config();
+const dotenv = require('dotenv');
+dotenv.config();
