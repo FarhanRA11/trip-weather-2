@@ -3,6 +3,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { createContext, useState } from 'react';
 import InputQuery from '@/components/InputQuery';
+import Link from 'next/link'
 
 const Map = dynamic(() => import('../components/LeafletMap'), {
     ssr: false
@@ -32,6 +33,8 @@ const Home = () => {
             <Map />
             <InputQuery />
         </coordinateContext.Provider>
+
+        <Link href='/documentation'>Documentation</Link>
     </>
 };
 

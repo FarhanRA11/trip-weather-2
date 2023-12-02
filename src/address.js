@@ -45,7 +45,7 @@ export default async function getAddress(coords, time13, step_index, code, waypo
             }
         }
 
-        getWeather(address.replaceAll(',',', '), time13, step_index, code, coords, waypoints, fixSteps);
+        await getWeather(address.replaceAll(',',', '), time13, step_index, code, coords, waypoints, fixSteps);
     } catch (error) {
         console.error('ERROR_address_getAddress_fetch:', error);
     }

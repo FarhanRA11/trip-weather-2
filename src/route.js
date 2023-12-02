@@ -1,6 +1,6 @@
 import getAddress from "./address";
 
-function calculateSteps(steps, sa, sn, time13, fixSteps) {
+async function calculateSteps(steps, sa, sn, time13, fixSteps) {
     const waypoints = steps.length;
     let lat = sa;
     let lng = sn;
@@ -48,12 +48,13 @@ function calculateSteps(steps, sa, sn, time13, fixSteps) {
                     })
                 }
 
-                getAddress(`${lat},${lng}`, time13, step_index, code, waypoints, fixSteps);
+                await getAddress(`${lat},${lng}`, time13, step_index, code, waypoints, fixSteps);
             }
 
             time13 += (partial_duration + 5 * 1000);
         }
     }
+    return fixSteps
 }
 
 export default async function getRoute(sn, sa, dn, da, time13, fixSteps) {
@@ -86,7 +87,8 @@ export default async function getRoute(sn, sa, dn, da, time13, fixSteps) {
             }]
         });
 
-        calculateSteps(allSteps, sa, sn, time13, fixSteps);
+        await calculateSteps(allSteps, sa, sn, time13, fixSteps);
+        return fixSteps
 
     } catch (error) {
         console.error('ERROR_route_getRoute_fetch:', error);

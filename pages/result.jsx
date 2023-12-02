@@ -8,6 +8,8 @@ const Map = dynamic(() => import('../components/LeafletMapResult'), {
 })
 
 export default function Result() {
+    const [done, setDone] = useState(false)
+    const [finalResult, setFinalResult] = useState(null)
     var fixSteps = [];
     const router = useRouter();
     const { sa, sn, da, dn, t } = router.query
@@ -17,15 +19,15 @@ export default function Result() {
         if (sa && sn && da && dn && time13) {
             console.log(`${sn},${sa};${dn},${da}`)
             getRoute(sn, sa, dn, da, time13, fixSteps)
-                .then(() => {
-                    console.log(fixSteps);
-                    document.getElementById('a').textContent = JSON.stringify(fixSteps, null, 2)
+                .then(result => {
+                    setFinalResult(result)
+                    setDone(true)
                 })
                 .catch(error => {
                     console.error('ERROR_result_Result_trifetch:', error);
                 });
         }
-    }, [sa, sn, da, dn, time13])
+    }, [sa, sn, da, dn, time13, done])
 
     return <>
         <div>{`(${sa}, ${sn}) to (${da}, ${dn})`}</div>
@@ -40,6 +42,10 @@ export default function Result() {
             <Map />
         </div>
 
-        <div id="a"></div>
+        {finalResult && (
+            <div>
+                <pre>{JSON.stringify(finalResult, null, 2)}</pre>
+            </div>
+        )}
     </>
 }
