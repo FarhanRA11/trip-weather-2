@@ -22,27 +22,30 @@ async function calculateSteps(steps, sa, sn, time13, fixSteps) {
                 if (step_index === 0) {
                     fixSteps.push({
                         name: 'start',
+                        color: 'red',
                         id: code,
                         time: time13,
-                        coordinate: {latitude: lat, longitude: lng},
+                        coordinate: [lat, lng],
                         address: '',
                         weather: ''
                     })
                 } else if (step_index === waypoints - 1) {
                     fixSteps.push({
                         name: 'destination',
+                        color: 'blue',
                         id: code,
                         time: time13,
-                        coordinate: {latitude: lat, longitude: lng},
+                        coordinate: [lat, lng],
                         address: '',
                         weather: ''
                     })
                 } else {
                     fixSteps.push({
                         name: 'step',
+                        color: 'green',
                         id: code,
                         time: time13,
-                        coordinate: {latitude: lat, longitude: lng},
+                        coordinate: [lat, lng],
                         address: '',
                         weather: ''
                     })
@@ -68,6 +71,7 @@ export default async function getRoute(sn, sa, dn, da, time13, fixSteps) {
 
         if (data.code !== 'Ok') {
             alert("Sorry, Can't find the route. Go back and try different point");
+            return;
         };
 
         const allSteps = [];

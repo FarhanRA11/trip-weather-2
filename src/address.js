@@ -10,19 +10,20 @@ export default async function getAddress(coords, time13, step_index, code, waypo
         const data = await response.json();
         const addressComponents = data.results[0].components;
 
-        const village = addressComponents.village;
-        const neighbourhood = addressComponents.neighbourhood;
-        const quarter = addressComponents.quarter;
-        const suburb = addressComponents.suburb;
-        const town = addressComponents.town;
-        const cityDistrict = addressComponents.city_district;
-        const city = addressComponents.city;
-        const county = addressComponents.county;
-        const stateDistrict = addressComponents.state_district;
-        const state = addressComponents.state;
-        const country = addressComponents.country;
+        const list = [
+            addressComponents.country,
+            addressComponents.state,
+            addressComponents.state_district,
+            addressComponents.county,
+            addressComponents.city,
+            addressComponents.city_district,
+            addressComponents.town,
+            addressComponents.suburb,
+            addressComponents.quarter,
+            addressComponents.neighbourhood,
+            addressComponents.village
+        ];
 
-        const list = [country, state, stateDistrict, county, city, cityDistrict, town, suburb, quarter, neighbourhood, village];
         const pattern = /[^a-zA-Z0-9().,"'\/\s]/;
         let componentsList = [];
 
@@ -41,11 +42,11 @@ export default async function getAddress(coords, time13, step_index, code, waypo
             addressList.push(address);
             const index = fixSteps.findIndex(obj => obj.id === code);
             if (index !== -1) {
-                fixSteps[index].address = address.replaceAll(',',', ');
+                fixSteps[index].address = address.replaceAll(',', ', ');
             }
         }
 
-        await getWeather(address.replaceAll(',',', '), time13, step_index, code, coords, waypoints, fixSteps);
+        await getWeather(time13, code, coords, fixSteps);
     } catch (error) {
         console.error('ERROR_address_getAddress_fetch:', error);
     }

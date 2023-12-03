@@ -18,7 +18,7 @@ function descUV(index) {
     }
 }
 
-export default async function getWeather(address, time13, step_index, code, coords, waypoints, fixSteps) {
+export default async function getWeather(time13, code, coords, fixSteps) {
     fixSteps = fixSteps.filter(obj => obj.address !== '');
     try {
         const response = await fetch('api/visualcrossing', {
