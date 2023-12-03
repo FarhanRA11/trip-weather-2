@@ -1,0 +1,152 @@
+[
+    {
+        "name": "start",
+        "color": "red",
+        "id": "0/0",
+        "time": 1701314100000,
+        "coordinate": [
+            -7.768603,
+            110.3712244
+        ],
+        "address": "Catur Tunggal, Sleman Regency, Special Region of Yogyakarta, Indonesia",
+        "weather": {
+            "cloudcover": 41,
+            "feelslike": 34.7,
+            "humidity": 64.3,
+            "text": "thunder-showers-day",
+            "precip": 1.1,
+            "precipprob": 71.4,
+            "pressure": 1010,
+            "snow": 0,
+            "snowdepth": 0,
+            "temp": 30.5,
+            "uvindex": 8.8,
+            "visibility": 10.9,
+            "winddir": 180.4,
+            "windgust": 4.7,
+            "windspeed": 4.3,
+            "title": "Thunder Showers Day",
+            "uv": "Very-High"
+        }
+    },
+    {
+        "name": "step",
+        "color": "green",
+        "id": "11/3",
+        "time": 1701314780399.9993,
+        "coordinate": [
+            -7.785743,
+            110.360535
+        ],
+        "address": "Jetis, Yogyakarta, Special Region of Yogyakarta, Indonesia",
+        "weather": {
+            "cloudcover": 41,
+            "feelslike": 34.7,
+            "humidity": 64.3,
+            "text": "thunder-showers-day",
+            "precip": 1.1,
+            "precipprob": 71.4,
+            "pressure": 1010,
+            "snow": 0,
+            "snowdepth": 0,
+            "temp": 30.5,
+            "uvindex": 8.8,
+            "visibility": 10.9,
+            "winddir": 180.4,
+            "windgust": 4.7,
+            "windspeed": 4.3,
+            "title": "Thunder Showers Day",
+            "uv": "Very-High"
+        }
+    },
+    {
+        "name": "step",
+        "color": "green",
+        "id": "16/4",
+        "time": 1701315102671.428,
+        "coordinate": [
+            -7.804458,
+            110.35113
+        ],
+        "address": "Wirobrajan, Yogyakarta, Special Region of Yogyakarta, Indonesia",
+        "weather": {
+            "cloudcover": 41,
+            "feelslike": 34.7,
+            "humidity": 64.3,
+            "text": "thunder-showers-day",
+            "precip": 1.1,
+            "precipprob": 71.4,
+            "pressure": 1010,
+            "snow": 0,
+            "snowdepth": 0,
+            "temp": 30.5,
+            "uvindex": 8.8,
+            "visibility": 10.9,
+            "winddir": 180.4,
+            "windgust": 4.7,
+            "windspeed": 4.3,
+            "title": "Thunder Showers Day",
+            "uv": "Very-High"
+        }
+    },
+    {
+        "name": "step",
+        "color": "green",
+        "id": "17/23",
+        "time": 1701315428583.3347,
+        "coordinate": [
+            -7.824137,
+            110.347273
+        ],
+        "address": "Tirtonirmolo, Bantul Regency, Special Region of Yogyakarta, Indonesia",
+        "weather": {
+            "cloudcover": 41,
+            "feelslike": 34.7,
+            "humidity": 64.3,
+            "text": "thunder-showers-day",
+            "precip": 1.1,
+            "precipprob": 71.4,
+            "pressure": 1010,
+            "snow": 0,
+            "snowdepth": 0,
+            "temp": 30.5,
+            "uvindex": 8.8,
+            "visibility": 10.9,
+            "winddir": 180.4,
+            "windgust": 4.7,
+            "windspeed": 4.3,
+            "title": "Thunder Showers Day",
+            "uv": "Very-High"
+        }
+    },
+    {
+        "name": "destination",
+        "color": "blue",
+        "id": "25/0",
+        "time": 1701315604400.0015,
+        "coordinate": [
+            -7.828283,
+            110.354646
+        ],
+        "address": "Panggungharjo, Bantul Regency, Special Region of Yogyakarta, Indonesia",
+        "weather": {
+            "cloudcover": 41,
+            "feelslike": 34.7,
+            "humidity": 64.3,
+            "text": "thunder-showers-day",
+            "precip": 1.1,
+            "precipprob": 71.4,
+            "pressure": 1010,
+            "snow": 0,
+            "snowdepth": 0,
+            "temp": 30.5,
+            "uvindex": 8.8,
+            "visibility": 10.9,
+            "winddir": 180.4,
+            "windgust": 4.7,
+            "windspeed": 4.3,
+            "title": "Thunder Showers Day",
+            "uv": "Very-High"
+        }
+    }
+]
