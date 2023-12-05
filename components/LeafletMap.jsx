@@ -1,13 +1,29 @@
 import 'leaflet/dist/leaflet.css';
 import styles from '@/styles/map.module.css';
 import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { coordinateContext } from '@/pages';
 import { useGeolocation } from '@/src/geolocation';
 
 export default function LeafletMap() {
-    const { setFormData } = useContext(coordinateContext);
+    const { formData, setFormData } = useContext(coordinateContext);
     var map;
+
+    const pickStart = (lat, lng) => {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            sa: lat,
+            sn: lng,
+        }));
+    };
+
+    const pickDest = (lat, lng) => {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            da: lat,
+            dn: lng,
+        }));
+    };
 
     const getLocation = map => {
         useGeolocation()
@@ -19,21 +35,6 @@ export default function LeafletMap() {
             .catch(err => {
                 console.error(err);
             });
-    };
-
-    const pickStart = (lat, lng) => {
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            sa: lat,
-            sn: lng,
-        }));
-    };
-    const pickDest = (lat, lng) => {
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            da: lat,
-            dn: lng,
-        }));
     };
 
     function CustomMap() {
@@ -59,6 +60,40 @@ export default function LeafletMap() {
             [91, -1440]
         ], { color: 'red' }).addTo(map)
 
+        useEffect(() => {
+            map.eachLayer((layer) => {
+                if (layer.options && layer.options.id === 'start') {
+                    map.removeLayer(layer);
+                }
+            });
+
+            if (formData.sa && formData.sn) {
+                L.marker([formData.sa, formData.sn], {
+                    id: 'start',
+                    icon: L.icon({
+                        iconUrl: `/markers/red.png`, shadowUrl: '/markers/shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [0, -40], shadowSize: [41, 41], shadowAnchor: [12, 41]
+                    }),
+                }).addTo(map);
+            }
+        }, [formData.sa, formData.sn, map]);
+
+        useEffect(() => {
+            map.eachLayer((layer) => {
+                if (layer.options && layer.options.id === 'destination') {
+                    map.removeLayer(layer);
+                }
+            });
+
+            if (formData.da && formData.dn) {
+                L.marker([formData.da, formData.dn], {
+                    id: 'destination',
+                    icon: L.icon({
+                        iconUrl: `/markers/blue.png`, shadowUrl: '/markers/shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [0, -40], shadowSize: [41, 41], shadowAnchor: [12, 41],
+                    }),
+                }).addTo(map);
+            }
+        }, [formData.da, formData.dn, map]);
+
         useMapEvents({
             click: e => {
                 let lat = e.latlng.lat.toFixed(6);
@@ -80,7 +115,7 @@ export default function LeafletMap() {
 
                     popupContent.querySelector('#option_map').appendChild(btnStart);
                     popupContent.querySelector('#option_map').appendChild(btnDest);
-                    
+
 
                     L.popup()
                         .setLatLng(e.latlng)
