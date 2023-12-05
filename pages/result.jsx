@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import getRoute from '@/src/route'
 import Loader from '@/components/Loader'
 import { Accordion } from '@/components/Accordion'
+import Head from 'next/head'
 import Link from 'next/link'
 
 const Map = dynamic(() => import('../components/LeafletMapResult'), {
@@ -22,30 +23,35 @@ export default function Result() {
 
     useEffect(() => {
         if (sa && sn && da && dn && time13) {
-            // getRoute(sn, sa, dn, da, time13, fixSteps)
-            //     .then(result => {
-            //         setFinalResult(result)
-            //         setLoading(false)
-            //     })
-            //     .catch(error => {
-            //         console.error('ERROR_result_Result_trifetch:', error);
-            //     });
-
-            // -----------------------------------------------------------------
-
-            fetch('/data.json')
-                .then(result => result.json())
-                .then(data => {
-                    setFinalResult(data)
+            getRoute(sn, sa, dn, da, time13, fixSteps)
+                .then(result => {
+                    console.log(result)
+                    setFinalResult(result)
                     setLoading(false)
                 })
                 .catch(error => {
                     console.error('ERROR_result_Result_trifetch:', error);
                 });
+
+            // -----------------------------------------------------------------
+
+            // fetch('/data.json')
+            //     .then(result => result.json())
+            //     .then(data => {
+            //         setFinalResult(data)
+            //         setLoading(false)
+            //     })
+            //     .catch(error => {
+            //         console.error('ERROR_result_Result_trifetch:', error);
+            //     });
         }
     }, [sa, sn, da, dn, time13, loading])
 
     return <>
+        <Head>
+            <title>Trip Weather: Result</title>
+        </Head>
+
         <div>{`(${sa}, ${sn}) to (${da}, ${dn})`}</div>
         <div>{new Date(time13).toLocaleString(
             'en-US', {
@@ -68,6 +74,8 @@ export default function Result() {
             </>
         }
 
-        <Link href='#map' className='rounded-full w-10 h-10 flex justify-center items-center fixed bg-slate-500 text-white no-underline z-[100] px-2.5 py-[5px] border-[none] right-[30px] bottom-[30px]'>^</Link>
+        <a href='#map' className='rounded-full w-10 h-10 flex justify-center items-center fixed bg-slate-500 text-white no-underline z-[100] px-2.5 py-[5px] border-[none] right-[30px] bottom-[30px]'>^</a>
+        
+        <Link href='/documentation' target='_blank'>Documentation</Link>
     </>
 }

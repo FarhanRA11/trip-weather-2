@@ -34,7 +34,7 @@ const Home = () => {
             <InputQuery />
         </coordinateContext.Provider>
 
-        <Link href='/documentation'>Documentation</Link>
+        <Link href='/documentation' target='_blank'>Documentation</Link>
     </>
 };
 
