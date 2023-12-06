@@ -25,8 +25,10 @@ export default function Result() {
         if (sa && sn && da && dn && time13) {
             getRoute(sn, sa, dn, da, time13, fixSteps)
                 .then(result => {
-                    console.log(result)
-                    setFinalResult(result)
+                    const fixResult = result.filter(obj => obj.address !== '' && obj.weather !== '')
+
+                    console.log(fixResult)
+                    setFinalResult(fixResult)
                     setLoading(false)
                 })
                 .catch(error => {
@@ -75,7 +77,7 @@ export default function Result() {
         }
 
         <a href='#map' className='rounded-full w-10 h-10 flex justify-center items-center fixed bg-slate-500 text-white no-underline z-[100] px-2.5 py-[5px] border-[none] right-[30px] bottom-[30px]'>^</a>
-        
+
         <Link href='/documentation' target='_blank'>Documentation</Link>
     </>
 }
