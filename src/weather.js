@@ -18,43 +18,52 @@ function descUV(index) {
     }
 }
 
-export default async function getWeather(time13, code, coords, fixSteps) {
-    fixSteps = fixSteps.filter(obj => obj.address !== '');
+export default async function getWeather(steps) {
     try {
-        const response = await fetch('api/visualcrossing', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ coords: coords, time10: Math.round(time13 / 1000) })
-        })
-        const data = await response.json();
-        const weatherComponents = data.currentConditions;
+        for (let stepIndex = 0; stepIndex < steps.length; stepIndex++) {
+            // fetching json data
+            const requestBody = JSON.stringify({
+                coords: `${steps[stepIndex].coordinate[0]},${steps[stepIndex].coordinate[1]}`, // lat,lng
+                time10: Math.round(steps[stepIndex].time / 1000)
+            })
+            const response = await fetch('api/visualcrossing', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: requestBody
+            })
+            const data = await response.json();
+            const weatherComponents = data.currentConditions;
+            const weather = {
+                cloudcover: weatherComponents.cloudcover,
+                feelslike: weatherComponents.feelslike,
+                humidity: weatherComponents.humidity,
+                text: weatherComponents.icon, // main
+                precip: weatherComponents.precip,
+                precipprob: weatherComponents.precipprob, // main
+                pressure: weatherComponents.pressure,
+                snow: weatherComponents.snow,
+                snowdepth: weatherComponents.snowdepth,
+                temp: weatherComponents.temp, // main
+                uvindex: weatherComponents.uvindex * 11 / 10,
+                visibility: weatherComponents.visibility,
+                winddir: weatherComponents.winddir,
+                windgust: weatherComponents.windgust,
+                windspeed: weatherComponents.windspeed, // main
+            }
+            weather.title = titleCase(weather.text.replaceAll('-', ' ')) //
+            weather.uv = descUV(weather.uvindex)
 
-        const weather = {
-            cloudcover: weatherComponents.cloudcover,
-            feelslike: weatherComponents.feelslike,
-            humidity: weatherComponents.humidity,
-            text: weatherComponents.icon, //
-            precip: weatherComponents.precip,
-            precipprob: weatherComponents.precipprob, //
-            pressure: weatherComponents.pressure,
-            snow: weatherComponents.snow,
-            snowdepth: weatherComponents.snowdepth,
-            temp: weatherComponents.temp, //
-            uvindex: weatherComponents.uvindex * 11 / 10,
-            visibility: weatherComponents.visibility,
-            winddir: weatherComponents.winddir,
-            windgust: weatherComponents.windgust,
-            windspeed: weatherComponents.windspeed, //
+            // insert weather data in each route steps
+            const index = steps.findIndex(obj => obj.id === steps[stepIndex].id);
+            if (index !== -1) {
+                steps[index].weather = weather;
+            }
         }
 
-        weather.title = titleCase(weather.text.replaceAll('-', ' ')) //
-        weather.uv = descUV(weather.uvindex)
-
-        const index = fixSteps.findIndex(obj => obj.id === code);
-        if (index !== -1) {
-            fixSteps[index].weather = weather;
-        }
+        // check all route steps had weather and returning it
+        steps = steps.filter(obj => obj.weather !== '');
+        return steps;
     } catch (error) {
-        console.error('ERROR_weather_getWeather_fetch:', error);
+
     }
 }

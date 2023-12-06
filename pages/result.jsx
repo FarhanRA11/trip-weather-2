@@ -6,6 +6,8 @@ import Loader from '@/components/Loader'
 import { Accordion } from '@/components/Accordion'
 import Head from 'next/head'
 import Link from 'next/link'
+import getAddress from '@/src/address'
+import getWeather from '@/src/weather'
 
 const Map = dynamic(() => import('../components/LeafletMapResult'), {
     ssr: false
@@ -17,23 +19,25 @@ export default function Result() {
     const [finalResult, setFinalResult] = useState(null)
     const [loading, setLoading] = useState(true)
     const router = useRouter();
-    const fixSteps = [];
     const { sa, sn, da, dn, t } = router.query;
     const time13 = +new Date(t);
 
     useEffect(() => {
         if (sa && sn && da && dn && time13) {
-            getRoute(sn, sa, dn, da, time13, fixSteps)
-                .then(result => {
-                    const fixResult = result.filter(obj => obj.address !== '' && obj.weather !== '')
-
-                    console.log(fixResult)
-                    setFinalResult(fixResult)
-                    setLoading(false)
+            getRoute(sn, sa, dn, da, time13)
+                .then(steps => {
+                    console.log(steps)
+                    getAddress(steps)
+                        .then(stepsA => {
+                            console.log(stepsA)
+                            getWeather(stepsA)
+                                .then(stepsW => {
+                                    console.log(stepsW)
+                                    setFinalResult(stepsW)
+                                    setLoading(false)
+                                })
+                        })
                 })
-                .catch(error => {
-                    console.error('ERROR_result_Result_trifetch:', error);
-                });
 
             // -----------------------------------------------------------------
 
@@ -47,7 +51,7 @@ export default function Result() {
             //         console.error('ERROR_result_Result_trifetch:', error);
             //     });
         }
-    }, [sa, sn, da, dn, time13, loading])
+    }, [sa, sn, da, dn, time13])
 
     return <>
         <Head>
@@ -76,7 +80,7 @@ export default function Result() {
             </>
         }
 
-        <a href='#map' className='rounded-full w-10 h-10 flex justify-center items-center fixed bg-slate-500 text-white no-underline z-[100] px-2.5 py-[5px] border-[none] right-[30px] bottom-[30px]'>^</a>
+        <a href='#map' className='rounded-full w-10 h-10 flex justify-center items-center fixed bg-slate-500 text-white no-underline z-[100] px-1 py-2 border-[none] right-[30px] bottom-[30px]'>^</a>
 
         <Link href='/documentation' target='_blank'>Documentation</Link>
     </>

@@ -1,6 +1,7 @@
 import getAddress from "./address";
 
-async function calculateSteps(steps, sa, sn, time13, fixSteps) {
+async function calculateSteps(steps, sa, sn, time13) {
+    const fixSteps = []
     const waypoints = steps.length;
     let lat = sa;
     let lng = sn;
@@ -51,16 +52,15 @@ async function calculateSteps(steps, sa, sn, time13, fixSteps) {
                     })
                 }
 
-                await getAddress(`${lat},${lng}`, time13, step_index, code, waypoints, fixSteps);
+                // await getAddress(`${lat},${lng}`, time13, step_index, code, waypoints, fixSteps);
             }
-
             time13 += (partial_duration + 5 * 1000);
         }
     }
     return fixSteps
 }
 
-export default async function getRoute(sn, sa, dn, da, time13, fixSteps) {
+export default async function getRoute(sn, sa, dn, da, time13) {
     try {
         const response = await fetch('/api/osrm', {
             method: 'POST',
@@ -91,9 +91,7 @@ export default async function getRoute(sn, sa, dn, da, time13, fixSteps) {
             }]
         });
 
-        await calculateSteps(allSteps, sa, sn, time13, fixSteps);
-        return fixSteps
-
+        return await calculateSteps(allSteps, sa, sn, time13);
     } catch (error) {
         console.error('ERROR_route_getRoute_fetch:', error);
     }

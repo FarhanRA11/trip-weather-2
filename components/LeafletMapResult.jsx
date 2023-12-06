@@ -17,7 +17,7 @@ export default function LeafletMapResult() {
         map.options.maxBounds = bounds;
         map.options.maxBoundsViscosity = 1.0;
         map.options.minZoom = 3;
-        map.options.maxZoom = 19;
+        map.options.maxZoom = 18;
 
         L.polygon([
             [91, 180.01],
