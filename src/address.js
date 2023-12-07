@@ -1,4 +1,5 @@
 export default async function getAddress(steps) {
+    console.log(steps)
     try {
         for (let stepIndex = 0; stepIndex < steps.length; stepIndex++) {
             // fetching json data
