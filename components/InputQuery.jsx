@@ -7,6 +7,7 @@ export default function InputQuery() {
     const [time13, setTime13] = useState(new Date());
     const router = useRouter();
 
+    // input query on change
     const handleChange = e => {
         setFormData(prevFormData => ({
             ...prevFormData,
@@ -14,6 +15,7 @@ export default function InputQuery() {
         }));
     };
 
+    // form on submit
     const handleSubmit = e => {
         e.preventDefault();
         router.push({
@@ -22,6 +24,7 @@ export default function InputQuery() {
         });
     };
 
+    // realtime update min-max time input
     useEffect(() => {
         const intervalId = setInterval(() => {
             const time13Now = Date.now();

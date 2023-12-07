@@ -9,6 +9,7 @@ export default function LeafletMap() {
     const { formData, setFormData } = useContext(coordinateContext);
     var map;
 
+    // point selected
     const pickStart = (lat, lng) => {
         setFormData(prevFormData => ({
             ...prevFormData,
@@ -16,7 +17,6 @@ export default function LeafletMap() {
             sn: lng,
         }));
     };
-
     const pickDest = (lat, lng) => {
         setFormData(prevFormData => ({
             ...prevFormData,
@@ -25,6 +25,7 @@ export default function LeafletMap() {
         }));
     };
 
+    // use geoloc
     const getLocation = map => {
         useGeolocation()
             .then(loc => {
@@ -47,6 +48,7 @@ export default function LeafletMap() {
         map.options.minZoom = 3;
         map.options.maxZoom = 18;
 
+        // mark a boundries
         L.polygon([
             [91, 180.01],
             [-91, 180.01],
@@ -60,6 +62,7 @@ export default function LeafletMap() {
             [91, -1440]
         ], { color: 'red' }).addTo(map)
 
+        // add new marker to selected starting point, remove old marker 
         useEffect(() => {
             map.eachLayer((layer) => {
                 if (layer.options && layer.options.id === 'start') {
@@ -77,8 +80,9 @@ export default function LeafletMap() {
             }
         }, [formData.sa, formData.sn, map]);
 
+        // add new marker to selected destination point, remove old marker 
         useEffect(() => {
-            map.eachLayer((layer) => {
+            map.eachLayer(layer => {
                 if (layer.options && layer.options.id === 'destination') {
                     map.removeLayer(layer);
                 }
@@ -99,9 +103,10 @@ export default function LeafletMap() {
                 let lat = e.latlng.lat.toFixed(6);
                 let lng = e.latlng.lng.toFixed(6);
 
+                // design a popup at clicked map
                 if (bounds.contains(L.latLng(lat, lng))) {
                     const popupContent = document.createElement('div');
-                    popupContent.innerHTML = `${lat}, ${lng}<div id="option_map" className={styles.popup}></div>`;
+                    popupContent.innerHTML = `<div id="option_map" class=${styles.popup}><div>${lat}, ${lng}</div></div>`;
 
                     const btnStart = document.createElement('button');
                     btnStart.textContent = 'Set as Origin';
@@ -127,6 +132,7 @@ export default function LeafletMap() {
     };
 
     return <>
+        {/* create map */}
         <MapContainer className={styles.map} center={[-0.282876, 118.493230]} zoom={4} scrollWheelZoom={true}>
             <CustomMap />
             <TileLayer

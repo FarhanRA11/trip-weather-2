@@ -21,6 +21,7 @@ const Home = () => {
             <title>Trip Weather</title>
         </Head>
 
+        {/* header page */}
         <div className='flex flex-row'>
             <Image src='/logo.png' width={200} height={200} alt='logo' priority />
             <div>

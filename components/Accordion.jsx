@@ -11,6 +11,7 @@ export const Accordion = props => {
     return <>
         <div id={data.id} className={`bg-[#e9e9e9] flex flex-col p-5 border border-[#c9c6c655] rounded-md w-full duration-500 group ${data.active === 1 ? 'expand' : ''}`}>
             <div className="w-full text-center gap-y-2 text-base flex flex-col items-center duration-500 group-[.expand]">
+                {/* location and time */}
                 <p>{data.address}</p>
                 <p>
                     {new Date(data.time).toLocaleString(
@@ -21,6 +22,7 @@ export const Accordion = props => {
                     })}
                 </p>
 
+                {/* main components */}
                 <div className='grid grid-cols-2 text-sm gap-4 w-full'>
                     <div className='flex flex-col items-center'>
                         <Image src={`/icons/${data.weather.text}.png`} alt='icon' width={50} height={50} priority />
@@ -46,7 +48,8 @@ export const Accordion = props => {
             </div>
 
             <div onClick={expandAccordion} className='text-end'><div className='text-3xl duration-500 cursor-pointer inline-block group-[.expand]:rotate-[135deg]'>+</div></div>
-
+            
+            {/* more components */}
             <div className="text-sm overflow-hidden max-h-0 group-[.expand]:max-h-[520px] duration-500 grid grid-cols-2 gap-4">
                 <div className='flex flex-col items-center'>
                     <Image src='components/precip.png' alt='precipitation' width={50} height={50} priority />

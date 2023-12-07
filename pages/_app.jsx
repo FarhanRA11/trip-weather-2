@@ -1,3 +1,5 @@
+import { AuthProvider } from '@/firebase/auth'
+import { DatabaseProvider } from '@/firebase/database'
 import '@/styles/globals.css'
 import { Open_Sans } from 'next/font/google'
 
@@ -9,9 +11,9 @@ const openSans = Open_Sans({
 })
 
 export default function App({ Component, pageProps }) {
-    return (
+    return <AuthProvider><DatabaseProvider>
         <main className={openSans.className}>
             <Component {...pageProps} />
         </main>
-    )
+    </DatabaseProvider></AuthProvider>
 }

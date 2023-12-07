@@ -1,3 +1,4 @@
+// if not error
 const showPosition = (resolve, pos) => {
     let lat = pos.coords.latitude;
     let lng = pos.coords.longitude;
@@ -5,6 +6,7 @@ const showPosition = (resolve, pos) => {
     resolve({ lat, lng });
 };
 
+// error handling
 const showError = (reject, err) => {
     switch (err.code) {
         case err.PERMISSION_DENIED:
@@ -22,6 +24,7 @@ const showError = (reject, err) => {
     };
 };
 
+// main function
 const useGeolocation = () => {
     return new Promise((resolve, reject) => {
         if (navigator.geolocation) {

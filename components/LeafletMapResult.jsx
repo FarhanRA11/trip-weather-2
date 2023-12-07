@@ -19,6 +19,7 @@ export default function LeafletMapResult() {
         map.options.minZoom = 3;
         map.options.maxZoom = 18;
 
+        // mark a boundries
         L.polygon([
             [91, 180.01],
             [-91, 180.01],
@@ -34,6 +35,7 @@ export default function LeafletMapResult() {
     }
 
     return <>
+        {/* create map */}
         <MapContainer id='map' className={styles.map} center={finalResult[finalResult.length - 1].coordinate} zoom={10} scrollWheelZoom={true}>
             <CustomMap />
             <TileLayer
@@ -42,6 +44,7 @@ export default function LeafletMapResult() {
 
             />
 
+            {/* create markers along the route based on main data */}
             {finalResult.map(obj => (
                 <Marker key={obj.id} position={obj.coordinate} icon={L.icon({ iconUrl: `/markers/${obj.color}.png`, shadowUrl: '/markers/shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [0, -40], shadowSize: [41, 41], shadowAnchor: [12, 41] })}>
                     <Popup>

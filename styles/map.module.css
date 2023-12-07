@@ -4,9 +4,15 @@
 }
 
 .btn {
-    margin: auto;
+    text-align: center;
+    width: auto;
+    padding: 2px 0;
+    background-color: cyan;
 }
 
 .popup {
-    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    row-gap: 5px;
 }
