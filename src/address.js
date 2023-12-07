@@ -1,5 +1,4 @@
 export default async function getAddress(steps) {
-    console.log(steps)
     try {
         for (let stepIndex = 0; stepIndex < steps.length; stepIndex++) {
             // fetching json data
@@ -48,8 +47,9 @@ export default async function getAddress(steps) {
             }
         }
 
+        console.log(steps)
         // check all route steps had address and returning it
-        steps = steps.filter(obj => obj.address !== '');
+        // steps = steps.filter(obj => obj.address !== '');
         return steps;
     } catch (error) {
         console.error('ERROR_address_getAddress_fetch:', error);
