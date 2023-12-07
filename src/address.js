@@ -9,7 +9,6 @@ export default async function getAddress(steps) {
             });
             const data = await response.json();
             const addressComponents = data.results[0].components;
-            console.log(addressComponents)
             const list = [
                 addressComponents.country,
                 addressComponents.state,
@@ -48,7 +47,6 @@ export default async function getAddress(steps) {
             }
         }
 
-        console.log(steps)
         // check all route steps had address and returning it
         // steps = steps.filter(obj => obj.address !== '');
         // return steps;
