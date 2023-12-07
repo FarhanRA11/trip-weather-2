@@ -8,6 +8,7 @@ export default async function getAddress(steps) {
                 body: `${steps[stepIndex].coordinate[0]},${steps[stepIndex].coordinate[1]}`
             });
             const data = await response.json();
+            console.log(data)
             const addressComponents = data.results[0].components;
             const list = [
                 addressComponents.country,
