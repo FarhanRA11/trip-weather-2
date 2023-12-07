@@ -48,8 +48,8 @@ export default async function getAddress(steps) {
         }
 
         // check all route steps had address and returning it
-        // steps = steps.filter(obj => obj.address !== '');
-        // return steps;
+        steps = steps.filter(obj => obj.address !== '');
+        return steps;
     } catch (error) {
         console.error('ERROR_address_getAddress_fetch:', error);
     }

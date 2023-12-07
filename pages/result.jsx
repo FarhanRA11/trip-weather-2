@@ -29,7 +29,6 @@ export default function Result() {
                     // console.log(steps)
                     getAddress(steps)
                         .then(stepsA => {
-                            console.log(stepsA)
                             getWeather(stepsA)
                                 .then(stepsW => {
                                     // console.log(stepsW)
