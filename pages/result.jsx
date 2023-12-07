@@ -26,12 +26,11 @@ export default function Result() {
         if (sa && sn && da && dn && time13) {
             getRoute(sn, sa, dn, da, time13)
                 .then(steps => {
-                    // console.log(steps)
                     getAddress(steps)
                         .then(stepsA => {
                             getWeather(stepsA)
                                 .then(stepsW => {
-                                    // console.log(stepsW)
+                                    console.log(stepsW)
                                     setFinalResult(stepsW)
                                     setLoading(false)
                                 })
