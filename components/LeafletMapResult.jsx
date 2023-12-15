@@ -1,10 +1,10 @@
 import 'leaflet/dist/leaflet.css';
-import styles from '@/styles/map.module.css';
-import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
-import { useContext } from 'react';
-import { resultContext } from '@/pages/result';
 import Image from 'next/image';
-import Link from 'next/link'
+import Link from 'next/link';
+import styles from '@/styles/map.module.css';
+import { useContext } from 'react';
+import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
+import { resultContext } from '@/pages/result';
 
 export default function LeafletMapResult() {
     const { finalResult } = useContext(resultContext);
@@ -25,14 +25,14 @@ export default function LeafletMapResult() {
             [-91, 180.01],
             [-91, 1440],
             [91, 1440]
-        ], { color: 'red' }).addTo(map)
+        ], { color: 'red' }).addTo(map);
         L.polygon([
             [91, -180.01],
             [-91, -180.01],
             [-91, -1440],
             [91, -1440]
-        ], { color: 'red' }).addTo(map)
-    }
+        ], { color: 'red' }).addTo(map);
+    };
 
     return <>
         {/* create map */}

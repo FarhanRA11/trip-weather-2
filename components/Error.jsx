@@ -1,16 +1,5 @@
-import Link from 'next/link';
 import Head from 'next/head';
-
-export function UserNotFound() {
-    return <>
-        <Head>
-            <title>Error</title>
-        </Head>
-
-        <p>Error 400</p>
-        <p>User Not Found</p>
-    </>
-}
+import Link from 'next/link';
 
 export function NotLoggedIn() {
     return <>
@@ -30,8 +19,8 @@ export function NotAllowed() {
             <title>Error</title>
         </Head>
 
-        <p>Error 405</p>
-        <p>Not Allowed</p>
+        <p>Error</p>
+        <p>Login to this user</p>
         <Link href='/sign-in'>SIGN IN</Link>
     </>
 }

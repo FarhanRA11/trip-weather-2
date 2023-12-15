@@ -1,9 +1,9 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { createContext, useState } from 'react';
-import InputQuery from '@/components/InputQuery';
 import Link from 'next/link'
+import Image from 'next/image';
+import InputQuery from '@/components/InputQuery';
+import { createContext, useState } from 'react';
 
 const Map = dynamic(() => import('../components/LeafletMap'), {
     ssr: false

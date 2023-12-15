@@ -1,5 +1,5 @@
+import Image from 'next/image';
 import { useState } from 'react';
-import Image from 'next/image'
 
 export const Accordion = props => {
     const [data, setData] = useState(props.data);

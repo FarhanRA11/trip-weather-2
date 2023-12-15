@@ -1,11 +1,11 @@
-import { coordinateContext } from '@/pages';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
+import { coordinateContext } from '@/pages';
 
 export default function InputQuery() {
+    const router = useRouter();
     const { formData, setFormData } = useContext(coordinateContext);
     const [time13, setTime13] = useState(new Date());
-    const router = useRouter();
 
     // input query on change
     const handleChange = e => {

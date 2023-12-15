@@ -1,13 +1,13 @@
-import { useRouter } from 'next/router';
-import React, { createContext, useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import getRoute from '@/src/route';
-import Loader from '@/components/Loader';
-import { Accordion } from '@/components/Accordion';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import getRoute from '@/src/route';
 import getAddress from '@/src/address';
 import getWeather from '@/src/weather';
+import Loader from '@/components/Loader';
+import { createContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Accordion } from '@/components/Accordion';
 
 const Map = dynamic(() => import('../components/LeafletMapResult'), {
     ssr: false
@@ -16,11 +16,11 @@ const Map = dynamic(() => import('../components/LeafletMapResult'), {
 export const resultContext = createContext();
 
 export default function Result() {
+    const router = useRouter();
+    const time13 = +new Date(t);
+    const { sa, sn, da, dn, t } = router.query;
     const [finalResult, setFinalResult] = useState(null);
     const [loading, setLoading] = useState(true);
-    const router = useRouter();
-    const { sa, sn, da, dn, t } = router.query;
-    const time13 = +new Date(t);
 
     useEffect(() => {
         if (sa && sn && da && dn && time13) {

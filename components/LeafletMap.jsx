@@ -1,13 +1,13 @@
 import 'leaflet/dist/leaflet.css';
 import styles from '@/styles/map.module.css';
-import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import { useContext, useEffect, useState } from 'react';
+import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import { coordinateContext } from '@/pages';
 import { useGeolocation } from '@/src/geolocation';
 
 export default function LeafletMap() {
-    const { formData, setFormData } = useContext(coordinateContext);
     var map;
+    const { formData, setFormData } = useContext(coordinateContext);
 
     // point selected
     const pickStart = (lat, lng) => {
@@ -54,13 +54,13 @@ export default function LeafletMap() {
             [-91, 180.01],
             [-91, 1440],
             [91, 1440]
-        ], { color: 'red' }).addTo(map)
+        ], { color: 'red' }).addTo(map);
         L.polygon([
             [91, -180.01],
             [-91, -180.01],
             [-91, -1440],
             [91, -1440]
-        ], { color: 'red' }).addTo(map)
+        ], { color: 'red' }).addTo(map);
 
         // add new marker to selected starting point, remove old marker 
         useEffect(() => {
