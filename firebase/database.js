@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { doc, getDoc, setDoc, collection, getDocs } from "firebase/firestore";
+import { doc, getDoc, setDoc, collection, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "./clientApp";
 
 const databaseContext = createContext();
@@ -8,25 +8,65 @@ export function useDatabase() {
 }
 
 export function DatabaseProvider({ children }) {
-    function createUserDatabase(email, username) {
+    function getData(uid) {
+        return getDoc(doc(db, 'saved-data', uid));
+    };
+
+    function createUser(email, username) {
         return setDoc(doc(db, 'username', email), { username: username });
     };
 
-    function updateUserDatabase(uid, data) {
-        return setDoc(doc(db, 'users', uid), data, { merge: true });
+    function createDatabase(username, email, uid) {
+        return setDoc(doc(db, 'saved-data', uid), {
+            username: username,
+            email: email,
+            data: [],
+            history: []
+        });
     };
-
-    function getData(uid) {
-        return getDoc(doc(db, 'users', uid));
-    };
-
-    // -------------------------------------
 
     function getAllUsername() {
         return getDocs(collection(db, 'username'))
     };
 
-    const value = { createUserDatabase, updateUserDatabase, getData, getAllUsername };
+    async function updateDatabase(uid, data) {
+        const docSnap = await getDoc(doc(db, 'saved-data', uid));
+        const existingData = docSnap.data().data;
+        existingData.push({
+            savedTime: Date.now(),
+            steps: data
+        });
+        return updateDoc(doc(db, 'saved-data', uid), { data: existingData })
+    };
+
+    async function setHistory(uid, firstData, lastData) {
+        const docSnap = await getDoc(doc(db, 'saved-data', uid));
+        const existingData = docSnap.data().history;
+        if (existingData.length >= 20) {
+            existingData.shift();
+        }
+        existingData.push({
+            savedTime: Date.now(),
+            addStart: firstData.address,
+            addDest: lastData.address,
+            sa: firstData.coordinate[0],
+            sn: firstData.coordinate[1],
+            da: lastData.coordinate[0],
+            dn: lastData.coordinate[1],
+            timeStart: firstData.time,
+            timeDest: lastData.time
+        })
+        return updateDoc(doc(db, 'saved-data', uid), { history: existingData });
+    }
+
+    async function deleteData(uid, index, location) {
+        const docSnap = await getDoc(doc(db, 'saved-data', uid));
+        const existingData = docSnap.data()[location];
+        existingData.splice(index, 1);
+        return updateDoc(doc(db, 'saved-data', uid), { [location]: existingData });
+    }
+
+    const value = { getData, createUser, createDatabase, getAllUsername, updateDatabase, setHistory, deleteData };
 
     return <databaseContext.Provider value={value}>
         {children}

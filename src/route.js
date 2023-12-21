@@ -1,6 +1,6 @@
 import { getDistance } from 'geolib';
 
-async function calculateSteps(steps, sa, sn, time13) {
+async function calculateSteps(steps, sa, sn, time13, totalDistance) {
     const fixSteps = []
     const waypoints = steps.length;
     let lat = sa;
@@ -15,15 +15,15 @@ async function calculateSteps(steps, sa, sn, time13) {
         // iterating intersections
         for (let intersection_index = 0; intersection_index < steps[step_index].intersections.length; intersection_index++) {
             const code = `${step_index}/${intersection_index}`;
+            // make sure steps not too close to each other
             const x = steps[step_index].intersections[intersection_index].location[1];
             const y = steps[step_index].intersections[intersection_index].location[0];
-            // make sure steps not too close to each other
-            const distance = getDistance((
+            const distance = getDistance(
                 { latitude: lat, longitude: lng },
                 { latitude: x, longitude: y }
-            ))
-
-            if (distance >= 2000 || step_index === 0 || step_index === waypoints - 1) { // 2000 meter
+            )
+            
+            if (distance >= (totalDistance / (0.1005 * totalDistance + 2.46231)) * 1000 || step_index === 0 || step_index === waypoints - 1) { // 2000 meter
                 lat = x;
                 lng = y;
 
@@ -63,7 +63,7 @@ async function calculateSteps(steps, sa, sn, time13) {
             time13 += (partial_duration + 5 * 1000);
         }
     }
-    return fixSteps
+    return fixSteps;
 }
 
 export default async function getRoute(sn, sa, dn, da, time13) {
@@ -99,8 +99,8 @@ export default async function getRoute(sn, sa, dn, da, time13) {
             }]
         });
 
-        return await calculateSteps(allSteps, sa, sn, time13);
-    } catch (error) {
+        return await calculateSteps(allSteps, sa, sn, time13, data.routes[0].distance/1000);
+    } catch (error) {   
         console.error('ERROR_route_getRoute_fetch:', error);
     }
 }

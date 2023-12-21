@@ -47,7 +47,7 @@ export const Accordion = props => {
                 </div>
             </div>
 
-            <div onClick={expandAccordion} className='text-end'><div className='text-3xl duration-500 cursor-pointer inline-block group-[.expand]:rotate-[135deg]'>+</div></div>
+            <div onClick={expandAccordion} className='text-end'><div className='w-auto text-3xl duration-500 cursor-pointer inline-block group-[.expand]:rotate-[135deg]'><svg xmlns="http://www.w3.org/2000/svg" height="20" width="17.5" viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg></div></div>
             
             {/* more components */}
             <div className="text-sm overflow-hidden max-h-0 group-[.expand]:max-h-[520px] duration-500 grid grid-cols-2 gap-4">
@@ -89,7 +89,7 @@ export const Accordion = props => {
                 </div>
                 <div className='flex flex-col items-center'>
                     <Image src={`/components/uv-${data.weather.uv}.png`} alt='uvindex' width={50} height={50} priority />
-                    <span>UV Index</span>{data.weather.uvindex} ({(data.weather.uv).replaceAll('-', ' ')})<br />
+                    <span>UV Index</span>{Math.round(data.weather.uvindex)} ({(data.weather.uv).replaceAll('-', ' ')})<br />
                 </div>
             </div>
         </div>

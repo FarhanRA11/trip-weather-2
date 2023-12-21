@@ -5,7 +5,7 @@ import { updateProfile } from "firebase/auth";
 import { useDatabase } from "@/firebase/database";
 
 export default function Signup() {
-    const { getAllUsername, createUserDatabase } = useDatabase();
+    const { getAllUsername, createUser, createDatabase } = useDatabase();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
@@ -25,20 +25,21 @@ export default function Signup() {
         })
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         if (username && email && password && !error) {
             setLoading(true)
-            signup(email, password)
-                .then(cred => updateProfile(cred.user, { displayName: username })
-                    .then(() => createUserDatabase(email, username)
-                        .then(() => alert('SIGN UP SUCCESS'))
-                        .catch(error => setError(error.code))
-                    )
-                    .catch(error => setError(error.code))
-                )
-                .catch(error => setError(error.code))
-                .finally(() => setLoading(false));
+            try {
+                const cred = await signup(email, password);
+                await updateProfile(cred.user, { displayName: username });
+                await createUser(email, username);
+                await createDatabase(username, email, cred.user.uid)
+                alert('SIGN UP SUCCESS');
+            } catch (error) {
+                setError(error.code);
+            } finally {
+                setLoading(false);
+            }
         };
     };
 

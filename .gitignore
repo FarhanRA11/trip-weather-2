@@ -35,5 +35,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.txt
 # data.json
+.txt
+
+# test site
+test.jsx

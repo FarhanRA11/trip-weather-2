@@ -36,7 +36,7 @@ export default function LeafletMapResult() {
 
     return <>
         {/* create map */}
-        <MapContainer id='map' className={styles.map} center={finalResult[finalResult.length - 1].coordinate} zoom={10} scrollWheelZoom={true}>
+        <MapContainer id='map' className={styles.map} center={finalResult.at(-1).coordinate} zoom={10} scrollWheelZoom={true}>
             <CustomMap />
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

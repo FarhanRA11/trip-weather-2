@@ -17,11 +17,11 @@ export default function Login() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        setLoading(true)
+        setLoading(true);
 
         if (!useEmail) {
             getAllUsername()
-                .then(result => {
+                .then(result => {   
                     const allEmail = [];
                     const allUsernames = [];
                     result.forEach(doc => {
@@ -36,7 +36,7 @@ export default function Login() {
                                 alert('LOGIN SUCCESS');
                                 router.push(`/${cred.user.displayName}`);
                             })
-                            .catch(error => setError(error.code))
+                            .catch(error => {setError(error.code); console.clear()})
                             .finally(() => setLoading(false));
                     } else {
                         setError('username not found');
@@ -50,7 +50,7 @@ export default function Login() {
                         alert('LOGIN SUCCESS');
                         router.push(`/${cred.user.displayName}`)
                     })
-                    .catch(error => setError(error.code))
+                    .catch(error => {setError(error.code); console.clear()})
                     .finally(() => setLoading(false));
             } else {
                 setLoading(false)
