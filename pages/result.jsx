@@ -34,15 +34,15 @@ export default function Result() {
         const fetchData = async () => {
             if (sa && sn && da && dn && time13) {
                 try {
-                    // const result = await getWeather(await getAddress(await getRoute(sn, sa, dn, da, time13)));
-                    // console.log(result);
-                    // setFinalResult(result);
+                    const result = await getWeather(await getAddress(await getRoute(sn, sa, dn, da, time13)));
+                    console.log(result);
+                    setFinalResult(result);
 
                     // ---------------------------------------------------------
                     
-                    const data = await (await fetch('/data.json')).json();
-                    console.log(data);
-                    setFinalResult(data);
+                    // const data = await (await fetch('/data.json')).json();
+                    // console.log(data);
+                    // setFinalResult(data);
                 } catch (error) {
                     console.error('ERROR_result_Result_trifetch:', error);
                 } finally {
@@ -105,7 +105,7 @@ export default function Result() {
 
                 <div className='flex justify-center'>
                     <div className='grid grid-cols-[repeat(2,1fr)] w-fit gap-[30px] text-[large] bg-[color:var(--blue-sky-transparent)] mt-[30px] p-10 rounded-[10px]'>
-                        {finalResult.map(obj => <Accordion key={obj.id} data={obj} />)}
+                        {finalResult && finalResult.map(obj => <Accordion key={obj.id} data={obj} />)}
                     </div>
                 </div>
             </>
