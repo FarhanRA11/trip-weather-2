@@ -15,7 +15,7 @@ export default function Profile() {
     const [saved, setSaved] = useState(null);
 
     useEffect(() => {
-        if (router.query.user || currentUser) {
+        if (router.query.user && currentUser) {
             setName(router.query.user)
             setUser(currentUser)
             getData(currentUser.uid)

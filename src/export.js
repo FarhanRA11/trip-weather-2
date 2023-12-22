@@ -1,31 +1,11 @@
 import { utils, writeFile } from 'sheetjs-style';
 import formatTime from './timeFormat';
 
-// [num, address, coords, datetime, 15*img], [4*null, 15*data]
-// worksheet['!merges'].push(
-//     { s: { c: 0, r: num*2+1 }, e: { c: 0, r: num*2+2 } },   // A3:A4
-//     { s: { c: 1, r: num*2+1 }, e: { c: 1, r: num*2+2 } },   // B3:B4
-//     { s: { c: 2, r: num*2+1 }, e: { c: 2, r: num*2+2 } },   // C3:C4
-//     { s: { c: 3, r: num*2+1 }, e: { c: 3, r: num*2+2 } }    // D3:D4
-// );
-// worksheet['!rows'].push({ hpx: 42 }, { hpx: 42 })
-
-const toDataURL = url => fetch(url)
-    .then(response => response.blob())
-    .then(blob => new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        reader.onloadend = () => resolve(reader.result)
-        reader.onerror = reject
-        reader.readAsDataURL(blob)
-    }))
-
-
 export default async function exportToExcel(data) {
-    // console.log(await toDataURL('/components/cloud.png'));
     // create new book
     const workbook = utils.book_new();
     const template = [
-        ['steps', 'address', 'coordinate (lat, lng)', 'date time', 'condition', null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        ['steps', 'address', 'coordinate\n(lat, lng)', 'date time', 'condition', null, null, null, null, null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, 'weather', 'cloud cover', 'feels like', 'humidity', 'precipitation', 'rain probability', 'pressure', 'snow', 'snow depth', 'temperature', 'uv index', 'visibility', 'wind direction', 'wind gust', 'wind speed']
     ];
 
@@ -34,39 +14,21 @@ export default async function exportToExcel(data) {
         template.push(
             [
                 i + 1, data[i].address, (data[i].coordinate).join(', '), formatTime(data[i].time),
-                '/components/cloud.png',
-                '/components/cloud.png',
-                '/components/cloud.png',
-                '/components/cloud.png',
-                '/components/cloud.png',
-                '/components/cloud.png',
-                '/components/cloud.png',
-                '/components/cloud.png',
-                '/components/cloud.png',
-                '/components/cloud.png',
-                '/components/cloud.png',
-                '/components/cloud.png',
-                '/components/cloud.png',
-                '/components/cloud.png',
-                '/components/cloud.png'
-            ],
-            [
-                null, null, null, null,
                 data[i].weather.title,
-                data[i].weather.cloudcover,
-                data[i].weather.feelslike,
-                data[i].weather.humidity,
-                data[i].weather.precip,
-                data[i].weather.precipprob,
-                data[i].weather.pressure,
-                data[i].weather.snow,
-                data[i].weather.snowdepth,
-                data[i].weather.temp,
-                data[i].weather.uvindex,
-                data[i].weather.visibility,
-                data[i].weather.winddir,
-                data[i].weather.windgust,
-                data[i].weather.windspeed
+                data[i].weather.cloudcover + '%',
+                data[i].weather.feelslike + '\u00B0C',
+                data[i].weather.humidity + '%',
+                data[i].weather.precip + ' mm',
+                data[i].weather.precipprob + '%',
+                data[i].weather.pressure + ' hPa',
+                data[i].weather.snow + ' cm',
+                data[i].weather.snowdepth + ' cm',
+                data[i].weather.temp + '\u00B0C',
+                `${data[i].weather.uvindex}\n(${data[i].weather.uv.replaceAll('-', ' ')})`,
+                data[i].weather.visibility + ' km',
+                data[i].weather.winddir + '\u00B0',
+                data[i].weather.windgust + ' km/h',
+                data[i].weather.windspeed + ' km/h'
             ]
         );
     }
@@ -88,31 +50,40 @@ export default async function exportToExcel(data) {
 
     // add new merge cell based on data
     for (let i = 1; i <= data.length; i++) {
-        worksheet['!merges'].push(
-            { s: { c: 0, r: i * 2 }, e: { c: 0, r: i * 2 + 1 } },
-            { s: { c: 1, r: i * 2 }, e: { c: 1, r: i * 2 + 1 } },
-            { s: { c: 2, r: i * 2 }, e: { c: 2, r: i * 2 + 1 } },
-            { s: { c: 3, r: i * 2 }, e: { c: 3, r: i * 2 + 1 } }
-        );
-        worksheet['!rows'].push({ hpx: 42 }, { hpx: 42 });
+        worksheet['!rows'].push({ hpx: 80 });
     }
 
     // styling
     for (const [key, value] of Object.entries(worksheet)) {
-        if (!key.startsWith('!') && key.length == 2) {
+        if (!key.startsWith('!')) {
             value.s = {
                 font: { sz: 11 },
                 alignment: { wrapText: true, vertical: 'center', horizontal: 'center' },
+                // border: {
+                //     top: { style: 'medium', color: { rgb: '000000' } },
+                //     right: { style: 'medium', color: { rgb: '000000' } },
+                //     bottom: { style: 'medium', color: { rgb: '000000' } },
+                //     left: { style: 'medium', color: { rgb: '000000' } }
+                // }
             };
             if ((key.endsWith('1') || key.endsWith('2')) && key.length == 2) {
                 value.s.font.bold = true;
             }
-        }
-    }
+            // if (['F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1'].includes(key)) {
+            //     value.s.border.top = { style: 'medium', color: { rgb: '000000' } };
+            //     if (key === 'S1') {
+            //         value.s.border.right = { style: 'medium', color: { rgb: '000000' } };
+            //     };
+            // };
+            // if (['A2', 'B2', 'C2', 'D2'].includes(key)) {
+            //     value.s.border.left = { style: 'medium', color: { rgb: '000000' } };
+            // };
+        };
+    };
 
     // finishing and trigger download
     utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-    console.log(worksheet)
+    console.log(worksheet);
 
     const fileName = 'trip 1';
     writeFile(workbook, `trip-weather_${fileName.replaceAll(' ', '-')}.xlsx`, { bookType: 'xlsx', type: 'blob', cellStyles: true });
