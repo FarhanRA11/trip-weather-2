@@ -14,7 +14,7 @@ export default function Documentation() {
 
                 All of those information is displayed in a clear and easy-to-use format, with an interactive map that lets you explore your route. Whether you're a seasoned traveler or a first-time adventurer, our website is the perfect tool for planning your next journey. <br />
 
-                <Link href='/'>Try it out now!</Link>
+                <Link href='/' className='underline'>Try it out now!</Link>
             </p>
         </div>
 
@@ -23,10 +23,10 @@ export default function Documentation() {
             <div>
                 <ul>
                     <li>Enter starting point (select on map or type the coordinate)</li>
-                    <li>You can also click "Find Your Location" button to auto-pick your starting point</li>
+                    <li>You can also click "Find My Location" button to auto-pick your starting point</li>
                     <li>Enter destination point (select on map or type the coordinate)</li>
                     <li>Click "Find Result" button</li>
-                    <li>Your result will display on a new tab</li>
+                    <li>Your result will display on a new page</li> 
                     <li>if nothind showed up after few minutes, restart the page</li>
                     <li>Click waypoint on a map to see weather forecast</li>
                     <li>Click "See Weather Details" and "+" to see more weather forecast details</li>
@@ -39,20 +39,19 @@ export default function Documentation() {
             <ul>
                 <li>
                     <p>Input</p>
-                    <p>User will input latitude and longitude on starting and destination point, departure time is also required</p>
+                    <p>User will input latitude and longitude on starting and destination point, starting time is also required</p>
                 </li>
                 <li>
                     <p>Process</p>
-                    <p>Inputted data will be put together and send to URL parameters. Then, those data will computed through 3 main function (Routing, Address Finding, and Weather Forecast). <br />
-
-                        - First functoin will find the route between 2 points to determine the waypoint and estimated time. <br />
-                        - Second function will check all the waypoints to find the address. <br />
-                        - Third function will check all the waypoints to forecast weather based from the time at that waypoint.
+                    <p>Inputted data will be put together. Then, those data will computed through 3 main function. <br />
+                        - Find the route between 2 points to determine the waypoint and estimated time. <br />
+                        - Check all the waypoints to find each address. <br />
+                        - Check all the waypoints to find each weather forecast based from the time at that waypoint.
                     </p>
                 </li>
                 <li>
                     <p>Output</p>
-                    <p>All of those data (route, address, estimated time, weather forecast) will showed at each waypoints on the map if user clicked it, while detailed data will showed below the map</p>
+                    <p>All of those data (route, address, estimated time, weather forecast) will showed at each waypoints on the map if user clicked a marker, while detailed data will showed below the map</p>
                 </li>
             </ul>
         </div>
@@ -60,19 +59,20 @@ export default function Documentation() {
         <div className='my-7'>
             <p>Notes</p>
             <ul>
-                <li>Maximum trip is 3 days or 2160km, otherwise the result may not be found</li>
-                <li>Using the fastest route, but not with real-time-world data (maybe soon)</li>
+                <li>Maximum recommended trip is 3 days or 2160km, otherwise the result may not be found</li>
+                <li>Using the fastest route</li>
+                <li>Not using realtime data (maybe soon)</li>
                 <li>Route, address, estimated time, weather forecast isn't 100% accurate or even the opposite from the result</li>
                 <li>Some addresses may misspelled or in the wrong order</li>
-                <li>This website is free to use and I'm not receive anything from it</li>
-                <li>This website will continue to be developed</li>
+                <li>All features free to use and I'm not receive anything from it</li>
+                <li>Features will continue to be developed</li>
             </ul>
         </div>
 
-        <div className='my-7'>
-            <div>
-                <p>Stack</p>
-                <div className=''>
+        <div className='my-7 flex flex-col items-center'>
+            <div className='text-center'>
+                <p className='mb-5'>Stack</p>
+                <div className='flex flex-wrap justify-center gap-5 mb-5'>
                     <Link href='https://react.dev' target='_blank'>
                         <Image src="/tech/react.png" alt="react" width={78} height={50} priority />
                     </Link>
@@ -102,9 +102,9 @@ export default function Documentation() {
                     </Link>
                 </div>
             </div>
-            <p>
-                made by: <Link href='https://github.com/FarhanRA11/trip-weather-2'>@FarhanRA11 (github)</Link> <br />
-                license: <Link href='https://github.com/FarhanRA11/trip-weather-2/blob/main/LICENSE.md'>on github</Link>
+            <p className='text-center'>
+                made by: <Link href='https://github.com/FarhanRA11/trip-weather-2' className='underline'>@FarhanRA11 (github)</Link> <br />
+                license: <Link href='https://github.com/FarhanRA11/trip-weather-2/blob/main/LICENSE.md' className='underline'>on github</Link>
             </p>
         </div>
 

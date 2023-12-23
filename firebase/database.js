@@ -42,9 +42,7 @@ export function DatabaseProvider({ children }) {
     async function setHistory(uid, firstData, lastData) {
         const docSnap = await getDoc(doc(db, 'saved-data', uid));
         const existingData = docSnap.data().history;
-        if (existingData.length >= 20) {
-            existingData.shift();
-        }
+        if (existingData.length >= 20) existingData.shift();
         existingData.push({
             savedTime: Date.now(),
             addStart: firstData.address,

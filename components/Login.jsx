@@ -19,42 +19,35 @@ export default function Login() {
         e.preventDefault();
         setLoading(true);
 
-        if (!useEmail) {
-            getAllUsername()
-                .then(result => {   
-                    const allEmail = [];
-                    const allUsernames = [];
-                    result.forEach(doc => {
-                        allEmail.push(doc.id);
-                        allUsernames.push(doc.data().username);
-                    });
-                    const userEmail = allEmail[allUsernames.indexOf(username)];
-
-                    if (userEmail && password) {
-                        login(userEmail, password)
-                            .then(cred => {
-                                alert('LOGIN SUCCESS');
-                                router.push(`/${cred.user.displayName}`);
-                            })
-                            .catch(error => {setError(error.code); console.clear()})
-                            .finally(() => setLoading(false));
-                    } else {
-                        setError('username not found');
-                        setLoading(false);
-                    }
-                })
-        } else {
-            if (email && password) {
-                login(email, password)
-                    .then(cred => {
-                        alert('LOGIN SUCCESS');
-                        router.push(`/${cred.user.displayName}`)
-                    })
-                    .catch(error => {setError(error.code); console.clear()})
-                    .finally(() => setLoading(false));
+        try {
+            if (useEmail) {
+                if (email && password) {
+                    const cred = await login(email, password);
+                    alert('LOGIN SUCCESS');
+                    router.push(`/${cred.user.displayName}`);
+                }
             } else {
-                setLoading(false)
-            };
+                const result = await getAllUsername();
+                const allEmails = [];
+                const allUsernames = [];
+                result.forEach(doc => {
+                    allEmails.push(doc.id);
+                    allUsernames.push(doc.data().username);
+                });
+                const userEmail = allEmails[allUsernames.indexOf(username)];
+
+                if (allUsernames.indexOf(username) == -1) {
+                    throw { code: 'username not found' }
+                } else if (userEmail && password) {
+                    const cred = await login(userEmail, password);
+                    alert('LOGIN SUCCESS');
+                    router.push(`/${cred.user.displayName}`);
+                }
+            }
+        } catch (error) {
+            setError(error.code);
+        } finally {
+            setLoading(false);
         };
     };
 

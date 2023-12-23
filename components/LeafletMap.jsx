@@ -65,9 +65,7 @@ export default function LeafletMap() {
         // add new marker to selected starting point, remove old marker 
         useEffect(() => {
             map.eachLayer((layer) => {
-                if (layer.options && layer.options.id === 'start') {
-                    map.removeLayer(layer);
-                }
+                if (layer.options && layer.options.id === 'start') map.removeLayer(layer);
             });
 
             if (formData.sa && formData.sn) {
@@ -83,9 +81,7 @@ export default function LeafletMap() {
         // add new marker to selected destination point, remove old marker 
         useEffect(() => {
             map.eachLayer(layer => {
-                if (layer.options && layer.options.id === 'destination') {
-                    map.removeLayer(layer);
-                }
+                if (layer.options && layer.options.id === 'destination') map.removeLayer(layer);
             });
 
             if (formData.da && formData.dn) {
@@ -121,7 +117,6 @@ export default function LeafletMap() {
                     popupContent.querySelector('#option_map').appendChild(btnStart);
                     popupContent.querySelector('#option_map').appendChild(btnDest);
 
-
                     L.popup()
                         .setLatLng(e.latlng)
                         .setContent(popupContent)
@@ -140,7 +135,6 @@ export default function LeafletMap() {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
         </MapContainer>
-        <button onClick={() => getLocation(map)}>geoloc</button>
+        <button onClick={() => getLocation(map)}>Find My Location</button>
     </>
-
 };

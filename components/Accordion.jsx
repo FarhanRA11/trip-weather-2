@@ -1,3 +1,4 @@
+import formatTime from '@/src/timeFormat';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -13,14 +14,7 @@ export const Accordion = props => {
             <div className="w-full text-center gap-y-2 text-base flex flex-col items-center duration-500 group-[.expand]">
                 {/* location and time */}
                 <p>{data.address}</p>
-                <p>
-                    {new Date(data.time).toLocaleString(
-                        'en-US', {
-                        dateStyle: 'medium',
-                        timeStyle: 'medium',
-                        hour12: false
-                    })}
-                </p>
+                <p>{formatTime(data.time)}</p>
 
                 {/* main components */}
                 <div className='grid grid-cols-2 text-sm gap-4 w-full'>

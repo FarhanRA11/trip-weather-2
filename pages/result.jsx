@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { useDatabase } from '@/firebase/database';
 import { Accordion } from '@/components/Accordion';
 import { useAuth } from '@/firebase/auth';
+import formatTime from '@/src/timeFormat';
 
 const Map = dynamic(() => import('../components/LeafletMapResult'), {
     ssr: false
@@ -34,17 +35,18 @@ export default function Result() {
         const fetchData = async () => {
             if (sa && sn && da && dn && time13) {
                 try {
-                    const result = await getWeather(await getAddress(await getRoute(sn, sa, dn, da, time13)));
-                    console.log(result);
-                    setFinalResult(result);
+                    const route = await getRoute(sn, sa, dn, da, time13);
+                    if (String(route).startsWith('Error')) throw String(route);
+                    const address = await getAddress(route);
+                    if (String(address).startsWith('Error')) throw String(address);
+                    const result = await getWeather(address);
+                    if (String(result).startsWith('Error')) throw String(result);
 
-                    // ---------------------------------------------------------
-                    
-                    // const data = await (await fetch('/data.json')).json();
-                    // console.log(data);
-                    // setFinalResult(data);
+                    // const result = await (await fetch('/data.json')).json();
+                    setFinalResult(result);
                 } catch (error) {
                     console.error('ERROR_result_Result_trifetch:', error);
+                    alert(error);
                 } finally {
                     setLoading(false);
                 };
@@ -57,18 +59,8 @@ export default function Result() {
         if (finalResult) {
             setAddStart(finalResult[0].address);
             setAddDest(finalResult.at(-1).address);
-            setTimeStart(new Date(finalResult[0].time).toLocaleString(
-                'en-US', {
-                dateStyle: 'medium',
-                timeStyle: 'medium',
-                hour12: false
-            }));
-            setTimeDest(new Date(finalResult.at(-1).time).toLocaleString(
-                'en-US', {
-                dateStyle: 'medium',
-                timeStyle: 'medium',
-                hour12: false
-            }));
+            setTimeStart(formatTime(finalResult[0].time));
+            setTimeDest(formatTime(finalResult.at(-1).time));
 
             setHistory(currentUser.uid, finalResult[0], finalResult.at(-1))
                 .then(() => console.log('saved to history'))
@@ -95,23 +87,26 @@ export default function Result() {
 
         {loading && currentUser
             ? <Loader data={''} />
-            : <>
-                <resultContext.Provider value={{ finalResult }}>
-                    <Map />
-                </resultContext.Provider>
+            : finalResult
+                ? <>
 
-                {/* details */}
-                <button onClick={() => saveData(finalResult)}>save data</button>
+                    <resultContext.Provider value={{ finalResult }}>
+                        <Map />
+                    </resultContext.Provider>
 
-                <div className='flex justify-center'>
-                    <div className='grid grid-cols-[repeat(2,1fr)] w-fit gap-[30px] text-[large] bg-[color:var(--blue-sky-transparent)] mt-[30px] p-10 rounded-[10px]'>
-                        {finalResult && finalResult.map(obj => <Accordion key={obj.id} data={obj} />)}
+                    {/* details */}
+                    <button onClick={() => saveData(finalResult)}>save data</button>
+
+                    <div className='flex justify-center'>
+                        <div className='grid grid-cols-[repeat(2,1fr)] w-fit gap-[30px] text-[large] bg-[color:var(--blue-sky-transparent)] mt-[30px] p-10 rounded-[10px]'>
+                            {finalResult && finalResult.map(obj => <Accordion key={obj.id} data={obj} />)}
+                        </div>
                     </div>
-                </div>
-            </>
+                </>
+                : <div>Error loading data</div>
         }
 
-        <a href='#map' className='rounded-full w-10 h-10 flex justify-center items-center fixed bg-slate-500 text-white no-underline z-[100] px-1 py-2 border-[none] right-[30px] bottom-[30px]'><svg xmlns="http://www.w3.org/2000/svg" height="20" width="15" viewBox="0 0 384 512"><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></svg></a>
+        <a href='#map' className='rounded-full w-10 h-10 flex justify-center items-center fixed bg-slate-500 text-white no-underline z-[100] px-1 py-2 border-[none] right-[30px] bottom-[30px]'><svg xmlns="http://www.w3.org/2000/svg" height="20" width="15" viewBox="0 0 384 512"><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z" /></svg></a>
 
         <Link href='/documentation' target='_blank'>Documentation</Link>
     </>

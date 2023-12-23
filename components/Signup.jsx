@@ -17,11 +17,8 @@ export default function Signup() {
         const allUsernames = [];
         getAllUsername().then(result => {
             result.forEach(doc => allUsernames.push(doc.data().username))
-            if (allUsernames.includes(input)) {
-                setError('Username has been used');
-            } else {
-                setError('');
-            }
+            if (allUsernames.includes(input)) setError('Username has been used');
+            else setError('');
         })
     }
 

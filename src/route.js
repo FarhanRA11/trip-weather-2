@@ -3,6 +3,8 @@ import { getDistance } from 'geolib';
 async function calculateSteps(steps, sa, sn, time13, totalDistance) {
     const fixSteps = []
     const waypoints = steps.length;
+    const DistanceConstant = (totalDistance / (0.1005 * totalDistance + 2.46231)) * 1000;
+    console.log(DistanceConstant)
     let lat = sa;
     let lng = sn;
 
@@ -18,14 +20,13 @@ async function calculateSteps(steps, sa, sn, time13, totalDistance) {
             // make sure steps not too close to each other
             const x = steps[step_index].intersections[intersection_index].location[1];
             const y = steps[step_index].intersections[intersection_index].location[0];
-            const distance = getDistance(
-                { latitude: lat, longitude: lng },
-                { latitude: x, longitude: y }
-            )
-            
-            if (distance >= (totalDistance / (0.1005 * totalDistance + 2.46231)) * 1000 || step_index === 0 || step_index === waypoints - 1) { // 2000 meter
+            const distance = getDistance({ latitude: lat, longitude: lng }, { latitude: x, longitude: y })
+
+            if (distance >= DistanceConstant || step_index === 0 || step_index === waypoints - 1) { // 2000 meter
                 lat = x;
                 lng = y;
+
+                if (step_index === waypoints - 1 && distance < DistanceConstant / 2) fixSteps.pop();
 
                 // create main data structure
                 if (step_index === 0) {
@@ -74,6 +75,7 @@ export default async function getRoute(sn, sa, dn, da, time13) {
             headers: {},
             body: `${sn},${sa};${dn},${da}`
         });
+        if (response.status !== 200) throw new Error(`${response.status}. ${response.statusText}`);
         const data = await response.json();
         if (data.code !== 'Ok') {
             alert("Sorry, Can't find the route. Go back and try different point");
@@ -99,8 +101,9 @@ export default async function getRoute(sn, sa, dn, da, time13) {
             }]
         });
 
-        return await calculateSteps(allSteps, sa, sn, time13, data.routes[0].distance/1000);
-    } catch (error) {   
+        return await calculateSteps(allSteps, sa, sn, time13, data.routes[0].distance / 1000);
+    } catch (error) {
         console.error('ERROR_route_getRoute_fetch:', error);
+        return error;
     }
 }

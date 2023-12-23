@@ -5,21 +5,17 @@ function titleCase(str) {
 }
 
 function descUV(index) {
-    if (index < 2.5) {
-        return 'Low';
-    } else if (index >= 2.5 && index < 5.5) {
-        return 'Moderate';
-    } else if (index >= 5.5 && index < 7.5) {
-        return 'High';
-    } else if (index >= 7.5 && index < 10.5) {
-        return 'Very-High';
-    } else {
-        return 'Extreme';
-    }
+    if (index < 2.5) return 'Low';
+    else if (index >= 2.5 && index < 5.5) return 'Moderate';
+    else if (index >= 5.5 && index < 7.5) return 'High';
+    else if (index >= 7.5 && index < 10.5) return 'Very-High';
+    else return 'Extreme';
 }
 
 export default async function getWeather(steps) {
     try {
+        if (steps === 'error') throw 'error';
+
         for (let stepIndex = 0; stepIndex < steps.length; stepIndex++) {
             // fetching json data
             const requestBody = JSON.stringify({
@@ -31,6 +27,7 @@ export default async function getWeather(steps) {
                 headers: { 'Content-Type': 'application/json' },
                 body: requestBody
             })
+            if (response.status !== 200) throw new Error(`${response.status}. ${response.statusText}`);
             const data = await response.json();
             const weatherComponents = data.currentConditions;
             const weather = {
@@ -55,15 +52,14 @@ export default async function getWeather(steps) {
 
             // insert weather data in each route steps
             const index = steps.findIndex(obj => obj.id === steps[stepIndex].id);
-            if (index !== -1) {
-                steps[index].weather = weather;
-            }
+            if (index !== -1) steps[index].weather = weather;
         }
 
         // check all route steps had weather and returning it
         steps = steps.filter(obj => obj.weather !== '');
         return steps;
     } catch (error) {
-
+        console.error('ERROR_weather_getWeather_fetch:', error);
+        return error;
     }
 }

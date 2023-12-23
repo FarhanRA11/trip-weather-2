@@ -1,5 +1,6 @@
 export default async function getAddress(steps) {
     try {
+        if (steps === 'error') throw 'error';
         for (let stepIndex = 0; stepIndex < steps.length; stepIndex++) {
             // fetching json data
             const response = await fetch('/api/opencage', {
@@ -7,6 +8,7 @@ export default async function getAddress(steps) {
                 headers: { 'Content-Type': 'text/plain' },
                 body: `${steps[stepIndex].coordinate[0]},${steps[stepIndex].coordinate[1]}`
             });
+            if (response.status !== 200) throw new Error(`${response.status}. ${response.statusText}`);
             const data = await response.json();
             const addressComponents = data.results[0].components;
             const list = [
@@ -29,9 +31,7 @@ export default async function getAddress(steps) {
             for (let comp = 0; comp < 11; comp++) {
                 if (list[comp] !== undefined && !pattern.test(list[comp])) {
                     componentsList.push(list[comp]);
-                    if (componentsList.length === 4) {
-                        break;
-                    }
+                    if (componentsList.length === 4) break;
                 }
             }
             const address = componentsList.reverse().join(',');
@@ -41,9 +41,7 @@ export default async function getAddress(steps) {
             if ((!addressList.includes(address) || stepIndex === steps.length - 1) && address.split(',').length > 2) {
                 addressList.push(address);
                 const index = steps.findIndex(obj => obj.id === steps[stepIndex].id);
-                if (index !== -1) {
-                    steps[index].address = address.replaceAll(',', ', ');
-                }
+                if (index !== -1) steps[index].address = address.replaceAll(',', ', ');
             }
         }
 
@@ -52,5 +50,6 @@ export default async function getAddress(steps) {
         return steps;
     } catch (error) {
         console.error('ERROR_address_getAddress_fetch:', error);
+        return error;
     }
 }
